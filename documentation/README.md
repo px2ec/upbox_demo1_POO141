@@ -1,0 +1,1 @@
+Aquí irá la documentición de lo que se haga, con diagramas UML y cosas relacionadas
