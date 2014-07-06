@@ -1,4 +1,4 @@
-OBJECTS = main.o ctrl_suckers.o serial.o
+OBJECTS = upboxd.o serial.o
 LIBS =
 
 INCLDIC = ./
