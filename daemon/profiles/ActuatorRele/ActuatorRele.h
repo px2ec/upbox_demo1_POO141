@@ -31,13 +31,11 @@ public:
 	ActuatorRele(char *, int);
 	~ActuatorRele(void);
 
-	void enable(int index);
-	void disable(int index);
+	void enableRele(int index);
+	void disableRele(int index);
 
-	void enable_all();
-	void disable_all();
+	void enableAll();
+	void disableAll();
 
-	friend class Robot;
-	friend class Leg;
 };
 #endif

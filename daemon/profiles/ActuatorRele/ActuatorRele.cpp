@@ -18,7 +18,7 @@ ActuatorRele::~ActuatorRele(void) {
 	serial_close(fd);
 }
 
-void ActuatorRele::enable(int index) {
+void ActuatorRele::enableRele(int index) {
 	buffer_out[0] = 0xFF;			// Header
 	buffer_out[1] = ENABLE_INTR;	// Instructions
 	buffer_out[2] = 1;				// Suctions cups numbers
@@ -28,7 +28,7 @@ void ActuatorRele::enable(int index) {
 	serial_send(fd, buffer_out, 4);
 }
 
-void ActuatorRele::disable(int index) {
+void ActuatorRele::disableRele(int index) {
 	buffer_out[0] = 0xFF;
 	buffer_out[1] = DISABLE_INTR;
 	buffer_out[2] = 1;
@@ -38,7 +38,7 @@ void ActuatorRele::disable(int index) {
 	serial_send(fd, buffer_out, 4);
 }
 
-void ActuatorRele::enable_all() {
+void ActuatorRele::enableAll() {
 	buffer_out[0] = 0xFF;
 	buffer_out[1] = ENABLE_ALL;
 	buffer_out[2] = 1;
@@ -48,7 +48,7 @@ void ActuatorRele::enable_all() {
 	serial_send(fd, buffer_out, 4);
 }
 
-void ActuatorRele::disable_all() {
+void ActuatorRele::disableAll() {
 	buffer_out[0] = 0xFF;
 	buffer_out[1] = DISABLE_ALL;
 	buffer_out[2] = 1;

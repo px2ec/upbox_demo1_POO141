@@ -2,7 +2,7 @@
 // Version 1.0 by Pedro Espinoza
 
 // cantidad de ventosas por defecto
-#define ACTUATORS       1
+#define ACTUATORS       4
 
 // Tipo de instrucciones
 #define ENABLE_INTR   48
