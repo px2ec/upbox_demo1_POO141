@@ -2,7 +2,7 @@
 // Version 2.0 by Pedro Espinoza
 
 // cantidad de ventosas por defecto
-#define C_SUCKS       4
+#define ACTUATORS       1
 
 // Tipo de instrucciones
 #define ENABLE_INTR   48
@@ -20,7 +20,7 @@ typedef struct minipkt {
   int ready; // packet status
   }packet;
 
-int suckpines[C_SUCKS] = {9, 8, 7, 6}; // pins of suction-cups
+int act_arr[ACTUATORS] = {9, 8, 7, 6}; // pins of suction-cups
 int enflag = 0; // enable flag from recieving packet
 
 // working packet
@@ -31,8 +31,8 @@ void setup()
   // initialize the serial communication:
   Serial.begin(9600);
   // initialize the Pines as an output:
-  for (int i = 0; i < C_SUCKS; i++) {
-    pinMode(suckpines[i], OUTPUT);
+  for (int i = 0; i < ACTUATORS; i++) {
+    pinMode(act_arr[i], OUTPUT);
   }
   
   lepacket.ready = 0;
@@ -62,7 +62,7 @@ void loop() {
       // se trabajan las ventosas
       for(int i = 0; i < n_sucks; i++){
           aux1 = tmppacket.param[i];
-          digitalWrite(suckpines[aux1 - 1], 1);
+          digitalWrite(act_arr[aux1 - 1], 1);
       }
 
       break;
@@ -70,21 +70,21 @@ void loop() {
       // se trabajan las ventosas
       for(int i = 0; i < n_sucks; i++){
           aux1 = tmppacket.param[i];
-          digitalWrite(suckpines[aux1 - 1], 0);
+          digitalWrite(act_arr[aux1 - 1], 0);
       }
 
       break;
     case ENABLE_ALL: // activar todos
       // se trabajan las ventosas
-      for(int i = 0; i < C_SUCKS; i++){
-          digitalWrite(suckpines[i], 1);
+      for(int i = 0; i < ACTUATORS; i++){
+          digitalWrite(act_arr[i], 1);
       }
 
       break;
     case DISABLE_ALL: // desactivar todos
       // se trabajan las ventosas
-      for(int i = 0; i < C_SUCKS; i++){
-          digitalWrite(suckpines[i], 0);
+      for(int i = 0; i < ACTUATORS; i++){
+          digitalWrite(act_arr[i], 0);
       }
 
       break; 
