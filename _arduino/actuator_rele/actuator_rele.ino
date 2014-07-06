@@ -1,5 +1,5 @@
-// Control de ventosas para robot ZBOT
-// Version 2.0 by Pedro Espinoza
+// Control de Reles upBox
+// Version 1.0 by Pedro Espinoza
 
 // cantidad de ventosas por defecto
 #define ACTUATORS       1
