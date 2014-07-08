@@ -13,22 +13,34 @@ extern "C" {
 #include <iostream>
 #include <vector>
 
+#define DEF_TIMEOUT		100000
+#define CHECK_DEV		4
+
+using namespace std;
+
 class ModCom {
 	int fd;
 
+	bool asigned = 0;
+
 	static vector<string> devDescriptionList;
+
+	string dd;
+	string md;
+
+	bool checkdev();
 
 public:
 
 	ModCom();
 	~ModCom(void);
 
-	vector<uint8_t> comunicate(vector<uint8_t>, bool returndata);
+	vector<uint8_t> comunicate(vector<uint8_t> buffer);
+	vector<uint8_t> comunicate(vector<uint8_t> buffer, bool returndata, int sizeread);
 
-	int getID();
+	bool isAssigned();
 
-	bool scan();
-
+	string getModDescription();
 	string getDevDescription();
 };
 
