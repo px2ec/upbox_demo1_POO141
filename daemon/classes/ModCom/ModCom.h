@@ -12,16 +12,17 @@ extern "C" {
 #include <stdint.h>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 #define DEF_TIMEOUT		100000
-#define CHECK_DEV		4
+#define CHECK_DEV		16
 
 using namespace std;
 
 class ModCom {
 	int fd;
 
-	bool asigned = 0;
+	bool assigned;
 
 	static vector<string> devDescriptionList;
 
@@ -32,7 +33,7 @@ class ModCom {
 
 public:
 
-	ModCom();
+	ModCom(void);
 	~ModCom(void);
 
 	vector<uint8_t> comunicate(vector<uint8_t> buffer);
