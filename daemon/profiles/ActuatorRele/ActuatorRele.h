@@ -4,9 +4,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <stdint.h>
 #include <iostream>
+#include <string>
+#include <vector>
+#include <sstream>
+
+using namespace std;
 
 #include "ModCom.h"
 
@@ -18,19 +22,22 @@
 
 class ActuatorRele : public ModDev{
 	
-	ModCom mc;
-
-	int n_rele;
+	//int n_rele;
 
 public:
-
-	ActuatorRele(char *, int);
+	ActuatorRele(void);
 	~ActuatorRele(void);
 
 	void enableRele(int index);
 	void disableRele(int index);
-	void enableAll();
-	void disableAll();
+
+	//void enableRele(int index);
+	//void disableRele(int index);
+	//void enableAll();
+	//void disableAll();
+
+	string getDescription();
+	string getStatus();
 
 };
 #endif
