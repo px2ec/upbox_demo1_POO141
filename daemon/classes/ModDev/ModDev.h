@@ -8,6 +8,9 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
+#include <vector>
+
+using namespace std;
 
 #include "ModCom.h"
 
@@ -21,26 +24,29 @@ class ModDev {
 	
 	ModCom mc;
 
-	bool enable = 1;
+	bool enabled = 1;
 
-	uint8_t buffer_in[255];
-	char buffer_out[255];
+	vector<uint8_t> buffer_in;
+	vector<uint8_t> buffer_out;
 
-	static int n_int;
+	static int n_inst = 0;
+
+	int my_id;
 
 public:
 
-	ModDev();
+	ModDev(void);
 	~ModDev(void);
 
 	void asociateModCom(ModCom mc_arg);
 
 	virtual string getDescription();
-
 	virtual string getStatus();
 
 	void enable();
 	void disable();
+
+	int getID();
 
 	int getInstanceCount();
 };
