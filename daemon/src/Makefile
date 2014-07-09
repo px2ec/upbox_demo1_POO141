@@ -1,7 +1,7 @@
-OBJECTS = test.o ModCom.o serial.o
+OBJECTS = test.o ModCom.o serial.o ModDev.o ActuatorRele.o
 LIBS =
 
-INCLDIC = ./
+INCLDIC = ./../include
 
 CC = gcc
 CPP = g++
