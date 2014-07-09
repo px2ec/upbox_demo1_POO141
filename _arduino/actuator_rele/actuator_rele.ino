@@ -12,6 +12,7 @@
 #define DISABLE_ALL		52
 
 #define CHECK_DEV		16
+#define INIT_DEV		9
 
 
 typedef struct minipkt {
@@ -43,6 +44,8 @@ void setup() {
 		pinMode(act_arr[i], OUTPUT);
 	}
 	
+	Serial.write("INIT");
+
 	lepacket.ready = 0;
 	lepacket.intr = 0;
 	lepacket.size = 0;
@@ -66,8 +69,11 @@ void loop() {
 	int n_sucks = tmppacket.size;
 
 	switch(tmppacket.intr){
+		case INIT_DEV:
+			//Serial.write(0);
+			break;
 		case CHECK_DEV:
-			if (tmppacket.param[0] == CHECK_DEV)
+			//if (tmppacket.param[0] == CHECK_DEV)
 				printDeviceDescription();
 			break; 
 		case ENABLE_INTR: // activar de forma selectiva
