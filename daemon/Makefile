@@ -1,4 +1,4 @@
-OBJECTS = upboxd.o serial.o
+OBJECTS = upboxd.o
 LIBS =
 
 INCLDIC = ./
