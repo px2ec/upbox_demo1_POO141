@@ -14,8 +14,12 @@ extern "C" {
 #include <vector>
 #include <algorithm>
 
-#define DEF_TIMEOUT		100000
+#include <time.h>
+#include <unistd.h>
+
+#define DEF_TIMEOUT		1000000
 #define CHECK_DEV		16
+#define INIT_DEV		9
 
 using namespace std;
 
@@ -30,6 +34,7 @@ class ModCom {
 	string md;
 
 	bool checkdev();
+	void init();
 
 public:
 

@@ -21,7 +21,7 @@ ModCom::ModCom(void) {
 		if (fd != -1){
 			redodev = find(devDescriptionList.begin(), devDescriptionList.end(), string(ttyport));
 			if (redodev == devDescriptionList.end() || devDescriptionList.size() == 0) {
-				if (checkdev()){
+				if (this->checkdev()){
 					dd = string(ttyport);
 					devDescriptionList.push_back(dd);
 					assigned = 1;
@@ -70,7 +70,7 @@ string ModCom::getDevDescription() {
 }
 
 vector<uint8_t> ModCom::comunicate(vector<uint8_t> buffer) {
-	this->comunicate(buffer, 0, 0);
+	return this->comunicate(buffer, 0, 0);
 }
 
 vector<uint8_t> ModCom::comunicate(vector<uint8_t> buffer, bool readdata, int sizeread) {
@@ -85,7 +85,9 @@ vector<uint8_t> ModCom::comunicate(vector<uint8_t> buffer, bool readdata, int si
 		vector<uint8_t> toreturn;
 		return toreturn;
 	} // if only send
-
+	
+	//serial_read(fd, buffer_in, 1, DEF_TIMEOUT);
+	
 	serial_read(fd, buffer_in, sizeread, DEF_TIMEOUT);
 
 	if (buffer_in[0] != 0xFF) {
@@ -99,7 +101,21 @@ vector<uint8_t> ModCom::comunicate(vector<uint8_t> buffer, bool readdata, int si
 }
 
 // private functions
+
+void ModCom::init() {
+	vector<uint8_t> buffer_out;
+	buffer_out.push_back(0xFF);				// Header
+	buffer_out.push_back(INIT_DEV);		// Instructions
+	buffer_out.push_back(1);				// Size
+	buffer_out.push_back(INIT_DEV);
+
+	this->comunicate(buffer_out);
+
+	usleep(2000*1000);
+}
+
 bool ModCom::checkdev() {
+	this->init();
 	vector<uint8_t> buffer_out;
 	buffer_out.push_back(0xFF);				// Header
 	buffer_out.push_back(CHECK_DEV);		// Instructions
