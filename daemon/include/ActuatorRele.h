@@ -13,6 +13,7 @@
 using namespace std;
 
 #include "ModCom.h"
+#include "ModDev.h"
 
 #define ENABLE_INTR		48
 #define DISABLE_INTR	56
@@ -20,9 +21,9 @@ using namespace std;
 #define	ENABLE_ALL		44
 #define	DISABLE_ALL		52
 
-class ActuatorRele : public ModDev{
+class ActuatorRele : public ModDev {
 	
-	//int n_rele;
+	int n_rele;
 
 public:
 	ActuatorRele(void);
