@@ -13,7 +13,9 @@ extern "C" {
 	#include "serial.h"
 }
 
+#include "ModDev.h"
 #include "ModCom.h"
+#include "ActuatorRele.h"
 
 using namespace std;
 
@@ -21,5 +23,12 @@ int main(int argc, char const *argv[]) {
 	ModCom mc;
 
 	cout << mc.getModDescription() << '\n';
+
+	if (mc.getModDescription() == "ACT_RELE") {
+		ActuatorRele actr;
+		actr.asociateModCom(mc);
+		actr.enableRele(1);
+	}
+
 	//printf("%d\n", (int)(mc.isAssigned()));
 }
