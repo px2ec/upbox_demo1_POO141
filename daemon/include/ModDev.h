@@ -4,11 +4,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <stdint.h>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -20,31 +20,34 @@ using namespace std;
 #define	ENABLE_ALL		44
 #define	DISABLE_ALL		52
 
+using namespace std;
+
 class ModDev {
-	
+
+	static int n_inst;
+
+protected:
+
 	ModCom mc;
 
-	bool enabled = 1;
-
-	vector<uint8_t> buffer_in;
-	vector<uint8_t> buffer_out;
-
-	static int n_inst = 0;
+	bool enabled;
 
 	int my_id;
 
 public:
 
 	ModDev(void);
-	~ModDev(void);
+	virtual ~ModDev(void);
 
-	void asociateModCom(ModCom mc_arg);
+	void asociateModCom(ModCom &mc_arg);
+	ModCom getModCom();
 
-	virtual string getDescription();
-	virtual string getStatus();
+	virtual string getDescription(){return "";};
+	virtual string getStatus(){return "";};
 
-	void enable();
-	void disable();
+	void setEnable();
+	void setDisable();
+	bool isEnabled();
 
 	int getID();
 
