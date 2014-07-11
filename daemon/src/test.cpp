@@ -9,10 +9,6 @@
 #include <time.h>
 #include <unistd.h>
 
-extern "C" {
-	#include "serial.h"
-}
-
 #include "ModDev.h"
 #include "ModCom.h"
 #include "ActuatorRele.h"
@@ -20,8 +16,8 @@ extern "C" {
 using namespace std;
 
 int main(int argc, char const *argv[]) {
+	ModCom mc1;
 	ModCom mc;
-
 	cout << mc.getModDescription() << '\n';
 
 	if (mc.getModDescription() == "ACT_RELE") {
