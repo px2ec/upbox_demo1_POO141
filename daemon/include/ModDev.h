@@ -19,6 +19,7 @@ using namespace std;
 
 #define	ENABLE_ALL		44
 #define	DISABLE_ALL		52
+#define CHECK_STATE		42
 
 using namespace std;
 
