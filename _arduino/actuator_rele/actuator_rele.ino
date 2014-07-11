@@ -24,6 +24,7 @@ typedef struct minipkt {
 	}packet;
 
 int act_arr[ACTUATORS] = {9, 8, 7, 6}; // pins of suction-cups
+int act_state = 0;
 int enflag = 0; // enable flag from recieving packet
 
 // working packet
@@ -34,6 +35,13 @@ void printDeviceDescription() {
 	Serial.write(CHECK_DEV);
 	Serial.write(8);
 	Serial.write("ACT_RELE");
+}
+
+void sendState() {
+	Serial.write(0xFF);
+	Serial.write(CHECK_STATE);
+	Serial.write(1);
+	Serial.write((int)act_state);
 }
 
 void setup() {
@@ -73,10 +81,11 @@ void loop() {
 			//Serial.write(0);
 			break;
 		case CHECK_DEV:
-			//if (tmppacket.param[0] == CHECK_DEV)
+			if (tmppacket.param[0] == CHECK_DEV)
 				printDeviceDescription();
 			break; 
 		case ENABLE_INTR: // activar de forma selectiva
+			act_state = 1;
 			for(int i = 0; i < n_sucks; i++){
 					aux1 = tmppacket.param[i];
 					digitalWrite(act_arr[aux1 - 1], 1);
@@ -84,6 +93,7 @@ void loop() {
 
 			break;
 		case DISABLE_INTR: // desactivar de forma selectiva
+			act_state = 0;
 			for(int i = 0; i < n_sucks; i++){
 					aux1 = tmppacket.param[i];
 					digitalWrite(act_arr[aux1 - 1], 0);

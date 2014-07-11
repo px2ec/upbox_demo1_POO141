@@ -29,8 +29,8 @@ public:
 	ActuatorRele(void);
 	~ActuatorRele(void);
 
-	void enableRele(int index);
-	void disableRele(int index);
+	void enableRele();
+	void disableRele();
 
 	//void enableRele(int index);
 	//void disableRele(int index);

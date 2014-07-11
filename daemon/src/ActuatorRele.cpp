@@ -14,26 +14,26 @@ ActuatorRele::~ActuatorRele(void) {
 	return;
 }
 
-void ActuatorRele::enableRele(int index) {
+void ActuatorRele::enableRele() {
 
 	vector<uint8_t> buffer_out;
 
 	buffer_out.push_back(0xFF);				// Header
 	buffer_out.push_back(ENABLE_INTR);		// Instructions
 	buffer_out.push_back(1);				// Size
-	buffer_out.push_back((uint8_t)index);	// Index
+	buffer_out.push_back(1);				// Index
 
 	mc.comunicate(buffer_out);
 }
 
-void ActuatorRele::disableRele(int index) {
+void ActuatorRele::disableRele() {
 
 	vector<uint8_t> buffer_out;
 	
 	buffer_out.push_back(0xFF);
 	buffer_out.push_back(DISABLE_INTR);
 	buffer_out.push_back(1);
-	buffer_out.push_back((uint8_t)index);
+	buffer_out.push_back(1);
 
 	mc.comunicate(buffer_out);
 }
@@ -45,10 +45,11 @@ string ActuatorRele::getDescription() {
 }
 
 string ActuatorRele::getStatus() {
-	if (this->isEnabled()){
-		return "Enabled";
+	if (!(this->isEnabled())){
+		return string("Disbled");
 	}
-	return string("Disbled");
+	
+	return "Enabled";
 }
 
 //void ActuatorRele::enableAll() {
