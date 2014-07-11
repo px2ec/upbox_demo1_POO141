@@ -3,7 +3,7 @@
 #define MODCOM_H
 
 extern "C" {
-	#include "serial.h"
+	#include "arduino-serial-lib.h"
 }
 #include <stdio.h>
 #include <stdlib.h>

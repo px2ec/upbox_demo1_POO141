@@ -15,9 +15,9 @@ ModCom::ModCom(void) {
 
 	// Search ttyUSB_'N' serial devices
 	for(int n = 0; n < 10; n++){
-		sprintf(ttyport, "/dev/ttyUSB%d", n);   
+		sprintf(ttyport, "/dev/ttyACM%d", n);   
 		serial_name = strdup(ttyport);
-		fd = serial_open(serial_name, B9600);
+		fd = serialport_init(serial_name, 9600);
 		if (fd != -1){
 			redodev = find(devDescriptionList.begin(), devDescriptionList.end(), string(ttyport));
 			if (redodev == devDescriptionList.end() || devDescriptionList.size() == 0) {
@@ -29,14 +29,14 @@ ModCom::ModCom(void) {
 				}
 			}
 		}
-		serial_close(fd);
+		serialport_close(fd);
 	}
 
 	// Search ttyACM_'N' arduino serial devices
 	for(int n = 0; n < 10; n++){
-		sprintf(ttyport, "/dev/ttyACM%d", n);  
+		sprintf(ttyport, "/dev/ttyUSB%d", n);  
 		serial_name = strdup(ttyport);
-		fd = serial_open(serial_name, B9600);
+		fd = serialport_init(serial_name, 9600);
 		if (fd != -1){
 			redodev = find(devDescriptionList.begin(), devDescriptionList.end(), string(ttyport));
 			if (redodev == devDescriptionList.end()) {
@@ -48,12 +48,12 @@ ModCom::ModCom(void) {
 				}
 			}
 		}
-		serial_close(fd);
+		serialport_close(fd);
 	}
 }
 
 ModCom::~ModCom(void) {
-	if (fd >= 0) serial_close(fd);
+	if (fd >= 0) serialport_close(fd);
 	return;
 }
 
@@ -78,8 +78,8 @@ vector<uint8_t> ModCom::comunicate(vector<uint8_t> buffer, bool readdata, int si
 
 	uint8_t buffer_in[255];
 
-	serial_io_flush(fd);
-	serial_send(fd, (char*)buffer_out, buffer.size());
+	serialport_flush(fd);
+	serialport_write(fd, (char*)buffer_out);
 
 	if (!readdata) {
 		vector<uint8_t> toreturn;
@@ -88,7 +88,7 @@ vector<uint8_t> ModCom::comunicate(vector<uint8_t> buffer, bool readdata, int si
 	
 	//serial_read(fd, buffer_in, 1, DEF_TIMEOUT);
 	
-	serial_read(fd, buffer_in, sizeread, DEF_TIMEOUT);
+	serialport_read(fd, buffer_in, sizeread, DEF_TIMEOUT);
 
 	if (buffer_in[0] != 0xFF) {
 		vector<uint8_t> toreturn;
@@ -111,7 +111,7 @@ void ModCom::init() {
 
 	this->comunicate(buffer_out);
 
-	usleep(2000*1000);
+	usleep(3000*1000);
 }
 
 bool ModCom::checkdev() {
