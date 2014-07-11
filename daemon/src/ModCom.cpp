@@ -111,7 +111,7 @@ void ModCom::init() {
 
 	this->comunicate(buffer_out);
 
-	usleep(3000*1000);
+	usleep(2000*1000);
 }
 
 bool ModCom::checkdev() {
