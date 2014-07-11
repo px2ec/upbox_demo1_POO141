@@ -1,4 +1,4 @@
-OBJECTS = test.o ModCom.o serial.o ModDev.o ActuatorRele.o
+OBJECTS = test.o ModCom.o arduino-serial-lib.o ModDev.o ActuatorRele.o
 LIBS =
 
 INCLDIC = ./../include
