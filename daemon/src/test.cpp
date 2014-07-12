@@ -25,12 +25,11 @@ int main(int argc, char const *argv[]) {
 		ActuatorRele actr;
 		actr.asociateModCom(mc);
 		actr.enableRele();
-	}
-	if (mc.getModDescription() == "LED_CTRL") {
+	}else if (mc.getModDescription() == "LED_CTRL") {
 		LedControl lctrl;
 		lctrl.asociateModCom(mc);
 		lctrl.turnOn();
-		lctrl.setBrightness(50);
+		lctrl.setBrightness(20);
 	}
 
 	//printf("%d\n", (int)(mc.isAssigned()));
