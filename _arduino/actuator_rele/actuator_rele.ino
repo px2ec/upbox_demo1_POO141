@@ -14,6 +14,7 @@
 #define CHECK_DEV		16
 #define INIT_DEV		9
 
+#define CHECK_STATE		42
 
 typedef struct minipkt {
 	int size; // bytes of parameters
