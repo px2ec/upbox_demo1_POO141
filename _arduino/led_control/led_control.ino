@@ -1,8 +1,8 @@
 // Control de LedControl upBox
 // Version 1.0 by Pedro Espinoza
 
-// cantidad de ventosas por defecto
-#define ACTUATORS		4
+// 
+//#define ACTUATORS		4
 
 // Tipo de instrucciones
 #define ENABLE_INTR		48
@@ -53,8 +53,6 @@ void setup() {
 	// initialize the Pines as an output:
 	pinMode(led_pin, OUTPUT);
 	
-	Serial.write("INIT");
-
 	lepacket.ready = 0;
 	lepacket.intr = 0;
 	lepacket.size = 0;

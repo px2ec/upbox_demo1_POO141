@@ -53,8 +53,6 @@ void setup() {
 		pinMode(act_arr[i], OUTPUT);
 	}
 	
-	Serial.write("INIT");
-
 	lepacket.ready = 0;
 	lepacket.intr = 0;
 	lepacket.size = 0;
