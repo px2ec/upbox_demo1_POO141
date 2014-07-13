@@ -51,6 +51,25 @@ ModCom::ModCom(void) {
 		}
 		serialport_close(fd);
 	}
+
+	// Search rfcomm_'N' arduino bluetooth devices
+	for(int n = 0; n < 10; n++){
+		sprintf(ttyport, "/dev/rfcomm%d", n);  
+		serial_name = strdup(ttyport);
+		fd = serialport_init(serial_name, 9600);
+		if (fd != -1){
+			redodev = find(devDescriptionList.begin(), devDescriptionList.end(), string(ttyport));
+			if (redodev == devDescriptionList.end() || devDescriptionList.size() == 0) {
+				if (this->checkdev()){
+					dd = string(ttyport);
+					devDescriptionList.push_back(string(ttyport));
+					assigned = 1;
+					return;
+				}
+			}
+		}
+		serialport_close(fd);
+	}
 }
 
 ModCom::~ModCom(void) {
