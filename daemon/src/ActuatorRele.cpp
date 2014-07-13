@@ -23,7 +23,7 @@ void ActuatorRele::enableRele() {
 	buffer_out.push_back(1);				// Size
 	buffer_out.push_back(1);				// Index
 
-	mc.comunicate(buffer_out);
+	mc->comunicate(buffer_out);
 }
 
 void ActuatorRele::disableRele() {
@@ -35,7 +35,7 @@ void ActuatorRele::disableRele() {
 	buffer_out.push_back(1);
 	buffer_out.push_back(1);
 
-	mc.comunicate(buffer_out);
+	mc->comunicate(buffer_out);
 }
 
 string ActuatorRele::getDescription() {

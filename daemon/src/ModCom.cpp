@@ -9,13 +9,14 @@ vector<string> ModCom::devDescriptionList;
 
 ModCom::ModCom(void) {
 	assigned = 0;
+	dd = "";
 	char ttyport[33];
 	char *serial_name;
 	vector<string>::iterator redodev;
 
 	// Search ttyUSB_'N' serial devices
 	for(int n = 0; n < 10; n++){
-		sprintf(ttyport, "/dev/ttyACM%d", n);   
+		sprintf(ttyport, "/dev/ttyUSB%d", n);   
 		serial_name = strdup(ttyport);
 		fd = serialport_init(serial_name, 9600);
 		if (fd != -1){
@@ -23,7 +24,7 @@ ModCom::ModCom(void) {
 			if (redodev == devDescriptionList.end() || devDescriptionList.size() == 0) {
 				if (this->checkdev()){
 					dd = string(ttyport);
-					devDescriptionList.push_back(dd);
+					devDescriptionList.push_back(string(ttyport));
 					assigned = 1;
 					return;
 				}
@@ -34,15 +35,15 @@ ModCom::ModCom(void) {
 
 	// Search ttyACM_'N' arduino serial devices
 	for(int n = 0; n < 10; n++){
-		sprintf(ttyport, "/dev/ttyUSB%d", n);  
+		sprintf(ttyport, "/dev/ttyACM%d", n);  
 		serial_name = strdup(ttyport);
 		fd = serialport_init(serial_name, 9600);
 		if (fd != -1){
 			redodev = find(devDescriptionList.begin(), devDescriptionList.end(), string(ttyport));
-			if (redodev == devDescriptionList.end()) {
+			if (redodev == devDescriptionList.end() || devDescriptionList.size() == 0) {
 				if (this->checkdev()){
 					dd = string(ttyport);
-					devDescriptionList.push_back(dd);
+					devDescriptionList.push_back(string(ttyport));
 					assigned = 1;
 					return;
 				}
@@ -54,7 +55,10 @@ ModCom::ModCom(void) {
 
 ModCom::~ModCom(void) {
 	if (fd >= 0) serialport_close(fd);
-	return;
+	if (dd == "" || devDescriptionList.size() == 0) return;
+	vector<string>::iterator redodev;
+	redodev = find(devDescriptionList.begin(), devDescriptionList.end(), dd);
+	devDescriptionList.erase(redodev);
 }
 
 bool ModCom::isAssigned() {

@@ -14,6 +14,7 @@ ModDev::ModDev(void) {
 
 ModDev::~ModDev(void) {
 	n_inst--;
+	delete mc;
 }
 
 void ModDev::setEnable() {
@@ -29,10 +30,10 @@ bool ModDev::isEnabled() {
 }
 
 void ModDev::asociateModCom(ModCom &mc_arg) {
-	mc = mc_arg;
+	mc = &mc_arg;
 }
 
-ModCom ModDev::getModCom() {
+ModCom *ModDev::getModCom() {
 	return mc;
 }
 

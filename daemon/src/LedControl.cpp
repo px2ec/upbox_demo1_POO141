@@ -23,7 +23,7 @@ void LedControl::turnOn() {
 	buffer_out.push_back(1);				// Size
 	buffer_out.push_back(1);	// Index
 
-	mc.comunicate(buffer_out);
+	mc->comunicate(buffer_out);
 }
 
 void LedControl::turnOff() {
@@ -35,7 +35,7 @@ void LedControl::turnOff() {
 	buffer_out.push_back(1);
 	buffer_out.push_back(1);
 
-	mc.comunicate(buffer_out);
+	mc->comunicate(buffer_out);
 }
 
 string LedControl::getDescription() {
@@ -61,7 +61,7 @@ void LedControl::setBrightness(int value) {
 	buffer_out.push_back(1);
 	buffer_out.push_back((uint8_t) value);
 
-	mc.comunicate(buffer_out);
+	mc->comunicate(buffer_out);
 }
 
 //void LedControl::enableAll() {

@@ -29,7 +29,7 @@ class ModDev {
 
 protected:
 
-	ModCom mc;
+	ModCom *mc;
 
 	bool enabled;
 
@@ -41,7 +41,7 @@ public:
 	virtual ~ModDev(void);
 
 	void asociateModCom(ModCom &mc_arg);
-	ModCom getModCom();
+	ModCom *getModCom();
 
 	virtual string getDescription(){return "";};
 	virtual string getStatus(){return "";};
