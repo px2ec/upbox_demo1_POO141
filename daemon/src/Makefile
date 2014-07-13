@@ -4,10 +4,6 @@ TARGET = upboxd
 OBJECTS = $(TARGET).o ModCom.o arduino-serial-lib.o ModDev.o ActuatorRele.o LedControl.o Dommo.o TempSensor.o
 LIBS = -ljson
 
-SRCDIR = ./src
-
-VPATH := $(SRCDIR)
-
 INCLDIC = ./../include
 
 CC = gcc
