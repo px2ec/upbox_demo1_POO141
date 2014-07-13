@@ -1,27 +1,17 @@
-OBJECTS = upboxd.o
-LIBS =
 
-INCLDIC = ./
+SRCDIR = ./src
 
-CC = gcc
-CPP = g++
-CFLAGS = -Wall -O2
-CXXFLAGS = -Wall -O2
-LDFLAGS =
+TARGET = upboxd
 
-all: test
+all: $(TARGET)
 
-test: $(OBJECTS)
-	$(CPP) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+$(TARGET):
+	cd $(SRCDIR) && make
+	mv $(SRCDIR)/$(TARGET) .
 
 clean:
-	rm -rf *.o test
+	cd $(SRCDIR) && make clean
+	rm -rf $(TARGET)
 
 rebuild:
 	make clean && make
-
-%.o: %.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -I$(INCLDIC) -c $<
-
-%.o: %.cpp
-	$(CPP) $(CXXFLAGS) $(LDFLAGS) -I$(INCLDIC) -c $<

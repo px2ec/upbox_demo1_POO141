@@ -1,5 +1,12 @@
-OBJECTS = test.o ModCom.o arduino-serial-lib.o ModDev.o ActuatorRele.o LedControl.o Dommo.o TempSensor.o
-LIBS =
+
+TARGET = upboxd
+
+OBJECTS = $(TARGET).o ModCom.o arduino-serial-lib.o ModDev.o ActuatorRele.o LedControl.o Dommo.o TempSensor.o
+LIBS = -ljson
+
+SRCDIR = ./src
+
+VPATH := $(SRCDIR)
 
 INCLDIC = ./../include
 
@@ -9,13 +16,13 @@ CFLAGS = -Wall -O2
 CXXFLAGS = -Wall -O2
 LDFLAGS =
 
-all: test
+all: $(TARGET)
 
-test: $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	$(CPP) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 clean:
-	rm -rf *.o test
+	rm -rf *.o $(TARGET)
 
 rebuild:
 	make clean && make
