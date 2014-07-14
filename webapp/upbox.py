@@ -45,17 +45,20 @@ class DasSocket:
 	def get_peripherals_of_module(self):
 		getall = [ { 'INTR':'RQST_ALL'} ]
 		getall = json.dumps(getall[0])
-		self.s.sendall(getall)
-		return self.s.recv(1024) # los modulos deben retornar aca un listado de sus dispositivos asociados
+		print "Sending query"
+		print self.s.sendall(getall)
+		data = self.s.recv(4096) # los modulos deben retornar aca un listado de sus dispositivos asociados
+		print data
+		return data
 		
 	# retorna un valor o JSON del metodo consultado al modulo
 	# to-do: implementar 'PARAM' en los modulos
-	def query(self, ident, method, arguments):
+	def query(self, ident, method):
 		# q = [ { 'dev_id':repr(ident), 'INTR':method, 'PARAM': arguments } ]
-		q = [ { 'dev_id':repr(ident), 'INTR':method } ]
-		q = json.dumps(q)
+		q = [ { 'dev_id':ident, 'INTR':method } ]
+		q = json.dumps(q[0])
 		self.s.sendall(q)
-		return conn.recv(1024)
+		return self.s.recv(1024)
 
 class View(flask.views.MethodView):
 	"""Primera prueba"""
@@ -71,6 +74,8 @@ class View(flask.views.MethodView):
 class Close(flask.views.MethodView):
 	"""Cierra conexion al modulo"""
 	def get(self):
+		socket.connect()
+		print socket.query(1, "OFFLED")
 		return socket.close()
 		
 class Cosas(flask.views.MethodView):
