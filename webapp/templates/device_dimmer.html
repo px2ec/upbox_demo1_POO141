@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block styles %}
+    <!-- Bootstrap slider -->
+    <link href="/static/css/slider.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+          <div class="row voffset1">
+            <div class="col-xs-4">Estado</div>
+            <div class="col-xs-8">
+            {% if dev_info.status is sameas false %}
+              <span id="status-icon" class="glyphicon glyphicon-remove"></span>
+              <span id="status-msg">Apagado</span>
+            {% else %}
+              <span id="status-icon" class="glyphicon glyphicon-ok"></span>
+              <span id="status-msg">Encendido</span>
+            {% endif %}
+            </div>
+          </div>
+          <div class="row voffset1">
+            <div class="col-xs-4">Descripción</div>
+            <div class="col-xs-8">{{ dev_info.description }}</div>
+          </div>
+          <div class="sub-header"></div>
+          <div class="row voffset1">
+            <div class="col-xs-4">Intensidad</div>
+            <div class="col-xs-8">
+              <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="{{ dev_info.intensity }}" id="sl1">
+            </div>
+          </div>
+          <div class="row voffset1">
+            <div class="col-xs-4">Controlar</div>
+            <div class="col-xs-8">
+              <div class="btn-group" data-toggle="buttons">
+              {% if dev_info.status is sameas false %}
+                <label class="btn btn-sm btn-success" id="btnTurnOn">
+                  <input type="radio" name="options" checked> Encender
+                </label>
+                <label class="btn btn-sm btn-default active" id="btnTurnOff">
+                  <input type="radio" name="options"> Apagar
+                </label>
+              {% else %}
+                <label class="btn btn-sm btn-default active" id="btnTurnOn">
+                  <input type="radio" name="options"> Encender
+                </label>
+                <label class="btn btn-sm btn-danger" id="btnTurnOff">
+                  <input type="radio" name="options" checked> Apagar
+                </label>
+              {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="sub-header"></div>
+          <div class="row voffset1">
+            <div class="col-xs-4">
+              <a href="{{ url_for('index') }}">Volver</a>
+            </div>
+          </div>
+{% endblock %}
+{% block scripts %}
+    <script src="/static/js/bootstrap-slider.js"></script>
+    <script type="text/javascript">
+      var url = "/devices/" + "{{ dev_info.dev_id }}";
+
+      var sl1 = $("#sl1").slider();
+      var old_value = $("#sl1").slider("getValue");
+          
+      sl1.on('slideStop', function(ev) {
+        var new_value = $("#sl1").slider("getValue");
+        var query = $.post(url, { intensity: new_value });
+
+        query.fail(function(data) {
+          alert("Error al actualizar!");
+          $("#sl1").slider("setValue", old_value)
+        });
+
+        query.done(function(data) {
+          old_value = new_value;
+        });
+      });
+
+      $("#btnTurnOn").click(function() {
+        if (!$(this).hasClass("btn-default")) {
+          var query = $.post(url, { status: "True" });
+
+          query.fail(function(data) {
+            alert("Error al actualizar!");
+          });
+
+          query.done(function(data) {
+            $("#btnTurnOn").toggleClass("btn-success btn-default");
+            $("#btnTurnOff").toggleClass("btn-default btn-danger");
+            $("#status-icon").toggleClass("glyphicon-ok glyphicon-remove");
+            $("#status-msg").text("Encendido");
+          });
+        }
+      });
+      $("#btnTurnOff").click(function() {
+        if (!$(this).hasClass("btn-default")) {
+          var query = $.post(url, { status: "False" });
+
+          query.fail(function(data) {
+            alert("Error al actualizar!");
+          });
+
+          query.done(function(data) {
+            $("#btnTurnOn").toggleClass("btn-default btn-success");
+            $("#btnTurnOff").toggleClass("btn-danger btn-default");
+            $("#status-icon").toggleClass("glyphicon-remove glyphicon-ok");
+            $("#status-msg").text("Apagado");
+          });
+        }
+      });
+    </script>
+{% endblock %}

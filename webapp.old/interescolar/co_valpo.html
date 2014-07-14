@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/favicon.ico">
+
+    <title>Competencia - Interescolar de Robótica Educativa</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <!-- Large modal -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+          <h4 class="modal-title">Cronómetro</h4>
+          </div>
+          <div class="wrapper">
+            <div class="clock">
+              <!-- Hours -->
+              <!--
+              <div class="clock_hours">
+                <div class="bgLayer">
+                  <canvas id="canvas_hours" width="188" height="188">
+                  </canvas>
+                  <div class="text">
+                    <p class="val">0</p>
+                    <p class="type_seconds">[h]</p>
+                    <p class="type_hours">Horas</p>
+                  </div>
+                </div>
+              </div>
+              -->
+              <!-- Hours -->
+              <!-- Minutes -->
+              <div class="clock_minutes">
+                <div class="bgLayer">
+                  <canvas id="canvas_minutes" width="188" height="188">
+                  </canvas>
+                  <div class="text">
+                    <p class="val">0</p>
+                    <p class="type_seconds">[min]</p>
+                  <!--
+                    <p class="type_minutes">Minutos</p>
+                  -->
+                  </div>
+                </div>
+              </div>
+              <!-- Minutes -->
+              <!-- Seconds -->
+              <div class="clock_seconds">
+                <div class="bgLayer">
+                  <canvas id="canvas_seconds" width="188" height="190">
+                  </canvas>
+                  <div class="text">
+                    <p class="val">0</p>
+                    <p class="type_seconds">[s]</p>
+                  <!--
+                    <p class="type_seconds">Segundos</p>
+                  -->
+                  </div>
+                </div>
+              </div>
+              <!-- Seconds -->
+            </div>
+            <div class="modal-footer">
+              <div class="text-center">
+                <button id="resetAndClear" class="btn btn-danger" onClick="javascript:sw.resetAndClear()">Resetear</button>
+                <button id="startStop" class="btn btn-success" onClick="javascript:sw.startStop()">Iniciar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">Interescolar de Robótica Educativa</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+          <!--
+            <li><a href="#">Iniciar sesión</a></li>
+          -->
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+           <ul class="nav nav-sidebar">
+            <li><a href="re_valpo.html">Resumen Valparaíso</a></li>
+            <li><a href="r1_valpo.html">Puntajes primera ronda</a></li>
+            <li><a href="r2_valpo.html">Puntajes segunda ronda</a></li>
+            <li class="active"><a href="#">Competencia</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="#">Resumen Concepción</a></li>
+            <li><a href="#">Puntajes primera ronda</a></li>
+            <li><a href="#">Puntajes segunda ronda</a></li>
+            <li><a href="#">Competencia</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="#">Arbitraje</a></li>
+            <li><a href="acreditacion.html">Acreditacion</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Competencia principal</h1>
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary active" id="btnRound1">
+              <input type="radio" name="options" checked> Ronda 1
+            </label>
+            <label class="btn btn-primary" id="btnRound2">
+              <input type="radio" name="options"> Ronda 2
+            </label>
+          </div>
+          <button class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Cronómetro</button>
+          <h3 class="sub-header">Por participar</h3>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="col-md-2">Modificar</th>
+                  <th>Equipo</th>
+                  <!--
+                  <th>Orden</th>
+                  -->
+                </tr>
+              </thead>
+              <tbody id="updateMeTp">
+              </tbody>
+            </table>
+          </div>
+          <div><a href="javascript:Shuffle()">Desordenar</a></div>
+          <h3 class="sub-header">Ya participaron</h3>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="col-md-2">Modificar</th>
+                  <th>Equipo</th>
+                </tr>
+              </thead>
+              <tbody id="updateMeAp">
+                <tr>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="visibility: hidden;"><a id="updLink" href="javascript:update.startStop()">Actualizar</a></div>
+          <div id="msgBox" style="visibility: hidden;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <link rel="stylesheet" href="css/jbclock.css" type="text/css" media="all"> 
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/docs.min.js"></script>
+    <script src="js/competencia.js"></script>
+    <script src="js/stopwatch.js"></script>
+    <script type="text/javascript">
+    var default_round = 1;
+    var update;
+    var sw;
+    $(document).ready(function(event) {
+      update = new updateValues({
+        autorun : true,
+        rfrate  : 5000,
+        url     : "http://127.0.0.1:5000/api/equipos_valpo",
+        round   : default_round
+      });
+
+      $("#btnRound1").click(function() {
+        update.startStop();
+        update.chRound(1);
+        update.startStop();
+      });
+      $("#btnRound2").click(function() {
+        update.startStop();
+        update.chRound(2);
+        update.startStop();
+      });
+      
+      sw = new StopWatch({
+        /*
+         * Blue:   #378CFF
+         * Green:  #9CDB7D
+         * Yellow: #FFDC50
+         * Red:    #FF6565
+         * White:  #FFFFFF
+         */
+
+        secondsColor : "#4FA34F",
+        minutesColor : "#CA4744",
+        hoursColor   : "#FF6565",
+        
+        secondsGlow  : "#428BCA",
+        minutesGlow  : "#428BCA",
+        hoursGlow    : "#428BCA",
+
+        hours     : 0,
+        minutes   : 0,
+        seconds   : 0,
+        msecs     : 0,
+        rfrate    : 35,
+        autostart : false,
+      });
+    });
+    
+    function Shuffle() {
+      update.startStop();
+      $.get("http://127.0.0.1:5000/api/shuffle_equipos_valpo");
+      update.startStop();
+    }
+
+    function moveDown(id) {
+      update.startStop();
+      $.get("http://127.0.0.1:5000/api/setear_estado_alto?id=" + id + "&r=" + update.getRound())
+      update.startStop();
+    }
+
+    function moveUp(id) {
+      update.startStop();
+      $.get("http://127.0.0.1:5000/api/setear_estado_bajo?id=" + id + "&r=" + update.getRound())
+      update.startStop();
+    }
+    </script>
+  </body>
+</html>

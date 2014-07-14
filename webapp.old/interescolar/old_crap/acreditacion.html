@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="pragma" content="no-cache">
+<title>IRE - Acreditaci&oacute;n</title>
+<link rel="stylesheet" type="text/css" href="css/style.css" >
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/puntajes.js"></script>
+<script type="text/javascript" src="js/acreditacion.js"></script>
+<script type="text/javascript">
+$(document).ready(function(event) {
+  var elem = $("#background img");
+  var num = 5;
+  var idx = 0;
+  var idn = idx + 1;
+
+  setInterval(function() {
+    if (num == 0) {
+      return;
+    }
+
+    idn = (idx == num) ? 0 : (idx + 1);
+
+    elem.eq(idx).appendTo("#background").fadeOut(1000, "linear");
+    elem.eq(idn).fadeIn(1000, "linear");
+
+    idx = (idx == num) ? 0 : (idx + 1);
+  }, 30000);
+});
+</script>
+</head>
+<body>
+<div id="background">
+  <img src="img/clean6.jpg" class="stretch defaultBg" alt="">
+  <img src="img/clean5.jpg" class="stretch" alt="">
+  <img src="img/clean4.jpg" class="stretch" alt="">
+  <img src="img/clean3.jpg" class="stretch" alt="">
+  <img src="img/clean2.jpg" class="stretch" alt="">
+  <img src="img/clean1.jpg" class="stretch" alt="">
+</div>
+<div id="container">
+  <div id="header">
+    <img id="imgHeader" src="img/cover_c.png" alt="">
+  </div>
+  <div id="boxForm" class="boxForm">
+    <div id="boxFormTitle" class="boxTitle">
+      <h2>Acreditaci&oacute;n de equipos</h2>
+    </div>
+    <div class="boxContainer">
+      <form id="buscaEquipo" name="acreditacion" method="post" autocomplete="off"
+       action="http://127.0.0.1:5000/consultar">
+        <label for="teamName">Nombre del equipo</label>
+        <select id="teamName" name="equipo">
+        </select>
+        <input id="submitBtn" class="submit" type="submit" value="Consultar">
+      </form>
+    </div>
+  </div>
+  <div id="msgBox" class="msgBox">
+    Error ID no encontrado!
+  </div>
+  <div id="boxResults" class="boxResults" >
+    <div id="boxResTitle" class="boxTitle">
+      <h4>NOMBRE DEL EQUIPO</h4>
+    </div>
+    <div class="boxContainer">
+      <div class="teamInfo">
+        <form id="formAcreditar" method="post" autocomplete="off"
+         action="http://127.0.0.1:5000/acreditar">
+          <label>Rol del equipo</label>
+          <input id="inTeamId" name="rol" type="text" value="ROL DEL EQUIPO" readonly>
+          
+          <div id="boxMbr">
+          <label>Integrante 1</label>
+          <input id="inMbr1" type="text" value="NOMBRE DEL INTEGRANTE 1" readonly>
+          <label>Integrante 2</label>
+          <input id="inMbr2" type="text" value="NOMBRE DEL INTEGRANTE 2" readonly>
+          <label>Integrante 3</label>
+          <input id="inMbr3" type="text" value="NOMBRE DEL INTEGRANTE 3" readonly>
+          </div>
+
+          <label>Acreditar</label>
+          <input id="chkBoxAcredita" name="chk_box_acredita" type="checkbox" class="checkbox">
+
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+      <div id="teamPictureBox">
+        <img id="teamPic" src="img/equipos/20131000000.jpg" alt="foto :D"
+         width="270" height="169" onerror="this.src='img/nophoto_th.jpg';">
+      </div>
+      <div class="uploadPicBox">
+        <form id="formUploadPic" method="post" enctype="multipart/form-data"
+         action="http://localhost:5000/uploadpic">
+          <label for="inFile">Cambiar foto</label>
+          <input id="inFile" type="file" name="picfile" size="10">
+          <input id="inRol"  type="hidden" name="rol" value="">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
