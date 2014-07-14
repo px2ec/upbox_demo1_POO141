@@ -40,5 +40,7 @@ public:
 	string getDescription();
 	string getStatus();
 
+	bool isOn();
+
 };
 #endif

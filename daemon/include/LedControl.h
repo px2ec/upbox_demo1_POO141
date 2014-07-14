@@ -21,6 +21,7 @@ using namespace std;
 #define	ENABLE_ALL		44
 #define	DISABLE_ALL		52
 #define SET_BRIGHTNESS	12
+#define CHECK_BRIGHTNESS	60
 
 class LedControl : public ModDev {
 	
@@ -35,6 +36,8 @@ public:
 	//void turnOn(int index);
 	//void turnOff(int index);
 	void setBrightness(int value);
+	int getBrightness();
+	bool isOn();
 
 	string getDescription();
 	string getStatus();
