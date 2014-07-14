@@ -1,6 +1,7 @@
 *.o
 *.CSV
 *.DAT
+*.pyc
 <<<<<<< HEAD
 test
 upboxd
