@@ -24,10 +24,7 @@ int TempSensor::getTempValue() {
 	vector<uint8_t> bc = mc->comunicate(buffer_out, 1, 4);
 
 	if (bc.empty()) return -1000;
-
-	if (bc[0] != 0xFF){
-		return -1000;
-	}
+	if (bc[0] != 0xFF) return -1000;
 
 	return (int)bc[3];
 }
