@@ -111,7 +111,7 @@ string getAllList() {
 			json_object *jintID = json_object_new_int(mdlist[i]->getID());
 			json_object_object_add(jobjLC, "dev_id", jintID);
 			
-			json_object *jintType = json_object_new_int(2);
+			json_object *jintType = json_object_new_int(3);
 			json_object_object_add(jobjLC, "type", jintType);
 			
 			 			
@@ -323,7 +323,7 @@ int main(int argc, char const *argv[]) {
 			len = to_return.size();
 			bytes_sent = send(new_sd, msg, len, 0);
 		}
-		
+
 		close(new_sd);
 	}
 
