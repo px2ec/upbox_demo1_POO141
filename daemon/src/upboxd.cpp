@@ -279,57 +279,57 @@ int main(int argc, char const *argv[]) {
 	status =  listen(socketfd, 5);
 	if (status == -1)  std::cout << "listen error" << std::endl ;
 
+	while (1) {
+		int new_sd;
+		struct sockaddr_storage their_addr;
+		socklen_t addr_size = sizeof(their_addr);
+		new_sd = accept(socketfd, (struct sockaddr *)&their_addr, &addr_size);
+		if (new_sd == -1)
+		{
+			std::cout << "listen error" << std::endl ;
+		}
+		else
+		{
+			std::cout << "Connection accepted. Using new socketfd : "  <<  new_sd << std::endl;
+		}
 
-	int new_sd;
-	struct sockaddr_storage their_addr;
-	socklen_t addr_size = sizeof(their_addr);
-	new_sd = accept(socketfd, (struct sockaddr *)&their_addr, &addr_size);
-	if (new_sd == -1)
-	{
-		std::cout << "listen error" << std::endl ;
-	}
-	else
-	{
-		std::cout << "Connection accepted. Using new socketfd : "  <<  new_sd << std::endl;
-	}
+		while(1){
+			std::cout << "Waiting to recieve data..."  << std::endl;
+			ssize_t bytes_recieved;
+			char incomming_data_buffer[1000];
+			bytes_recieved = recv(new_sd, incomming_data_buffer, 1000, 0);
+			// If no data arrives, the program will just wait here until some data arrives.
+			if (bytes_recieved == 0) std::cout << "host shut down." << std::endl ;
+			if (bytes_recieved == -1)std::cout << "recieve error!" << std::endl ;
+			std::cout << bytes_recieved << " bytes recieved :" << std::endl ;
+			incomming_data_buffer[bytes_recieved] = '\0';
+			//std::cout << incomming_data_buffer << std::endl;
 
-	while(1){
-		std::cout << "Waiting to recieve data..."  << std::endl;
-		ssize_t bytes_recieved;
-		char incomming_data_buffer[1000];
-		bytes_recieved = recv(new_sd, incomming_data_buffer, 1000, 0);
-		// If no data arrives, the program will just wait here until some data arrives.
-		if (bytes_recieved == 0) std::cout << "host shut down." << std::endl ;
-		if (bytes_recieved == -1)std::cout << "recieve error!" << std::endl ;
-		std::cout << bytes_recieved << " bytes recieved :" << std::endl ;
-		incomming_data_buffer[bytes_recieved] = '\0';
-		//std::cout << incomming_data_buffer << std::endl;
+			if (incomming_data_buffer[0] != '{') break;
+				
+			// JSON-----
+			json_object * jobj = json_tokener_parse(incomming_data_buffer);     
+			//json_parse(jobj);
 
-		if (incomming_data_buffer[0] != '{') continue;
-			
-		// JSON-----
-		json_object * jobj = json_tokener_parse(incomming_data_buffer);     
-		//json_parse(jobj);
+			string to_return = getReturn(jobj);
 
-		string to_return = getReturn(jobj);
+			// ---------
 
-		// ---------
-
-		std::cout << "send()ing back a message..."  << std::endl;
-		char msg[10000];
-		strcpy(msg, to_return.c_str()); 
-		int len;
-		ssize_t bytes_sent;
-		len = to_return.size();
-		bytes_sent = send(new_sd, msg, len, 0);
+			std::cout << "send()ing back a message..."  << std::endl;
+			char msg[10000];
+			strcpy(msg, to_return.c_str()); 
+			int len;
+			ssize_t bytes_sent;
+			len = to_return.size();
+			bytes_sent = send(new_sd, msg, len, 0);
+		}
+		
+		close(new_sd);
 	}
 
 	std::cout << "Stopping server..." << std::endl;
 	freeaddrinfo(host_info_list);
-	close(new_sd);
 	close(socketfd);
 
-return 0 ;
-	
-
+	return 0 ;
 }
