@@ -1,7 +1,7 @@
 
 TARGET = upboxd
 
-OBJECTS = $(TARGET).o ModCom.o arduino-serial-lib.o ModDev.o ActuatorRele.o LedControl.o Dommo.o TempSensor.o
+OBJECTS = $(TARGET).o ModCom.o arduino-serial-lib.o ModDev.o ActuatorRele.o LedControl.o Dommo.o TempSensor.o json_upbox.o
 LIBS = -ljson -lbluetooth
 
 INCLDIC = ./../include
