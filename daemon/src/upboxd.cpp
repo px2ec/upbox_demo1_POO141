@@ -3,81 +3,6 @@
 
 Dommo dm1;
 
-/*printing the value corresponding to boolean, double, integer and strings*/
-void print_json_value(json_object *jobj){
-	enum json_type type;
-	printf("type: %d ",type);
-	type = json_object_get_type(jobj); /*Getting the type of the json object*/
-	switch (type) {
-		case json_type_boolean: printf("json_type_boolean\n");
-			printf("value: %s\n", json_object_get_boolean(jobj)? "true": "false");
-			break;
-		case json_type_double: printf("json_type_double\n");
-			printf("          value: %lf\n", json_object_get_double(jobj));
-			break;
-		case json_type_int: printf("json_type_int\n");
-			printf("          value: %d\n", json_object_get_int(jobj));
-			break;
-		case json_type_string: printf("json_type_string\n");
-			printf("          value: %s\n", json_object_get_string(jobj));
-			break;
-	}
-}
-
-void json_parse_array( json_object *jobj, char *key) {
-	void json_parse(json_object * jobj); /*Forward Declaration*/
-	enum json_type type;
-
-	json_object *jarray = jobj; /*Simply get the array*/
-	if(key) {
-		jarray = json_object_object_get(jobj, key); /*Getting the array if it is a key value pair*/
-	}
-
-	int arraylen = json_object_array_length(jarray); /*Getting the length of the array*/
-	printf("Array Length: %d\n", arraylen);
-	int i;
-	json_object * jvalue;
-
-	for (i=0; i< arraylen; i++){
-		jvalue = json_object_array_get_idx(jarray, i); /*Getting the array element at position i*/
-		type = json_object_get_type(jvalue);
-		if (type == json_type_array) {
-			json_parse_array(jvalue, NULL);
-		}
-		else if (type != json_type_object) {
-			printf("value[%d]: ", i);
-			print_json_value(jvalue);
-		}
-		else {
-			json_parse(jvalue);
-		}
-	}
-}
-
-/*Parsing the json object*/
-void json_parse(json_object * jobj) {
-	enum json_type type;
-	json_object_object_foreach(jobj, key, val) { /*Passing through every array element*/
-		printf("key: %s\n",key);
-		printf("type: %d ",type);
-		type = json_object_get_type(val);
-		switch (type) {
-			case json_type_boolean: 
-			case json_type_double: 
-			case json_type_int: 
-			case json_type_string: print_json_value(val);
-				break; 
-			case json_type_object: printf("json_type_object\n");
-				jobj = json_object_object_get(jobj, key);
-				json_parse(jobj); 
-				break;
-			case json_type_array: printf("type: json_type_array, ");
-				json_parse_array(jobj, key);
-				break;
-		}
-	}
-} 
-
 void scanDevices() {
 
 	while (1){
@@ -113,6 +38,106 @@ void scanDevices() {
 	}
 }
 
+string getAllList() {
+
+	json_object *jobj = json_object_new_object();
+	
+	json_object *jstring = json_object_new_string("RQST_ALL");
+	json_object_object_add(jobj, "INTR", jstring);
+
+	json_object *jint = json_object_new_int(dm1.getModDevsCount());
+	json_object_object_add(jobj, "N_DEV", jint);
+
+	if (dm1.getModDevsCount() == 0) return string(json_object_to_json_string(jobj));
+
+	vector<ModDev*> mdlist = dm1.getAllModDevs();
+
+	json_object *jarray = json_object_new_array();
+
+	for (int i = 0; i < dm1.getModDevsCount(); ++i) {
+		if ((mdlist[i]->getModCom())->getModDescription() == "LED_CTRL") {
+			LedControl *lctrl = (LedControl *)mdlist[i];
+			json_object *jobjLC = json_object_new_object();
+			
+			json_object *jintID = json_object_new_int(mdlist[i]->getID());
+			json_object_object_add(jobjLC, "dev_id", jintID);
+			
+			json_object *jintType = json_object_new_int(2);
+			json_object_object_add(jobjLC, "type", jintType);
+			
+			json_object *jintIntesity = json_object_new_int(lctrl->getBrightness());
+			json_object_object_add(jobjLC, "intensity", jintIntesity);
+ 			
+ 			json_object *jstrName = json_object_new_string("Ilumanicion");
+			json_object_object_add(jobjLC, "name", jstrName);
+ 			
+ 			json_object *jstrSts = json_object_new_boolean(lctrl->isOn());
+			json_object_object_add(jobjLC, "status", jstrSts);
+ 			
+ 			json_object *jstrDescription = json_object_new_string((mdlist[i]->getDescription()).c_str());
+			json_object_object_add(jobjLC, "description", jstrDescription);
+
+			json_object_array_add(jarray,jobjLC);
+
+		}else if ((mdlist[i]->getModCom())->getModDescription() == "TMP_SENS") {
+			TempSensor *tmpsens = (TempSensor *)mdlist[i];
+			json_object *jobjLC = json_object_new_object();
+			
+			json_object *jintID = json_object_new_int(mdlist[i]->getID());
+			json_object_object_add(jobjLC, "dev_id", jintID);
+			
+			json_object *jintType = json_object_new_int(1);
+			json_object_object_add(jobjLC, "type", jintType);
+			
+			json_object *jintTemp = json_object_new_int(tmpsens->getTempValue());
+			json_object_object_add(jobjLC, "temperature", jintTemp);
+ 			
+ 			json_object *jstrName = json_object_new_string("Temperatura");
+			json_object_object_add(jobjLC, "name", jstrName);
+ 			
+ 			json_object *jstrSts = json_object_new_boolean(1);
+			json_object_object_add(jobjLC, "status", jstrSts);
+ 			
+ 			json_object *jstrDescription = json_object_new_string((mdlist[i]->getDescription()).c_str());
+			json_object_object_add(jobjLC, "description", jstrDescription);
+
+			json_object_array_add(jarray,jobjLC);
+		}else if ((mdlist[i]->getModCom())->getModDescription() == "ACT_RELE") {
+			ActuatorRele *actr = (ActuatorRele *)mdlist[i];
+			json_object *jobjLC = json_object_new_object();
+			
+			json_object *jintID = json_object_new_int(mdlist[i]->getID());
+			json_object_object_add(jobjLC, "dev_id", jintID);
+			
+			json_object *jintType = json_object_new_int(2);
+			json_object_object_add(jobjLC, "type", jintType);
+			
+			 			
+ 			json_object *jstrName = json_object_new_string("Actuador");
+			json_object_object_add(jobjLC, "name", jstrName);
+ 			
+ 			json_object *jstrSts = json_object_new_boolean(actr->isOn());
+			json_object_object_add(jobjLC, "status", jstrSts);
+ 			
+ 			json_object *jstrDescription = json_object_new_string((mdlist[i]->getDescription()).c_str());
+			json_object_object_add(jobjLC, "description", jstrDescription);
+
+			json_object_array_add(jarray,jobjLC);
+		}
+	}
+
+	json_object_object_add(jobj, "DEV_LIST", jarray);
+	
+	return string(json_object_to_json_string(jobj));
+}
+
+
+string getReturn(json_object * jobj) {
+	string intr = getStrFromKey(jobj, "INTR");
+	if (intr == "RQST_ALL") {
+		return getAllList();
+	}
+}
 
 int main(int argc, char const *argv[]) {
 	
@@ -183,18 +208,22 @@ int main(int argc, char const *argv[]) {
 		if (bytes_recieved == -1)std::cout << "recieve error!" << std::endl ;
 		std::cout << bytes_recieved << " bytes recieved :" << std::endl ;
 		incomming_data_buffer[bytes_recieved] = '\0';
-		std::cout << incomming_data_buffer << std::endl;
+		//std::cout << incomming_data_buffer << std::endl;
 
 		// JSON-----
 		json_object * jobj = json_tokener_parse(incomming_data_buffer);     
-		json_parse(jobj);
+		//json_parse(jobj);
+
+		string to_return = getReturn(jobj);
+
 		// ---------
 
 		std::cout << "send()ing back a message..."  << std::endl;
-		char msg[] = "thank you.";
+		char msg[10000];
+		strcpy(msg, to_return.c_str()); 
 		int len;
 		ssize_t bytes_sent;
-		len = strlen(msg);
+		len = to_return.size();
 		bytes_sent = send(new_sd, msg, len, 0);
 	}
 

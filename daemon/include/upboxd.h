@@ -13,8 +13,6 @@
 #include <sys/socket.h> // Needed for the socket functions
 #include <netdb.h>      // Needed for the socket functions
 
-#include <json/json.h>
-
 #include "ModDev.h"
 #include "ModCom.h"
 #include "ActuatorRele.h"
@@ -22,5 +20,7 @@
 #include "TempSensor.h"
 
 #include "Dommo.h"
+
+#include "json_upbox.h"
 
 using namespace std;
