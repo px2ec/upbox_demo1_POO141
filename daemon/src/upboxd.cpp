@@ -3,6 +3,7 @@
 
 Dommo dm1;
 
+// Scan devices an asign a dommo class
 void scanDevices() {
 
 	while (1){
@@ -38,6 +39,7 @@ void scanDevices() {
 	}
 }
 
+// Return json as string to webapp
 string getAllList() {
 
 	json_object *jobj = json_object_new_object();
@@ -186,6 +188,7 @@ string setLedBrightness(json_object * jobj) {
 	return "FAIL";
 }
 
+// Return json as string
 string getTemp(json_object * jobj) {
 	int dev_id = getIntFromKey(jobj, "dev_id");
 	ModDev *md = dm1.getModDev(dev_id);
@@ -210,6 +213,7 @@ string getTemp(json_object * jobj) {
 	return "FAIL";
 }
 
+// WebApp's instructions
 string getReturn(json_object * jobj) {
 	string intr = getStrFromKey(jobj, "INTR");
 	if (intr == "RQST_ALL") {
@@ -301,7 +305,7 @@ int main(int argc, char const *argv[]) {
 		incomming_data_buffer[bytes_recieved] = '\0';
 		//std::cout << incomming_data_buffer << std::endl;
 
-		if (incomming_data_buffer[0] != '{') break;
+		if (incomming_data_buffer[0] != '{') continue;
 			
 		// JSON-----
 		json_object * jobj = json_tokener_parse(incomming_data_buffer);     
