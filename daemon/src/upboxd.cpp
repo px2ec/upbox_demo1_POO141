@@ -127,16 +127,107 @@ string getAllList() {
 	}
 
 	json_object_object_add(jobj, "DEV_LIST", jarray);
-	
+
 	return string(json_object_to_json_string(jobj));
 }
 
+string setOnLed(json_object * jobj) {
+	int dev_id = getIntFromKey(jobj, "dev_id");
+	ModDev *md = dm1.getModDev(dev_id);
+	if ((md->getModCom())->getModDescription() == "LED_CTRL") {
+		LedControl *lctrl = (LedControl *)md;
+		lctrl->turnOn();
+		return "OK";
+	}
+	return "FAIL";
+}
+
+string setOffLed(json_object * jobj) {
+	int dev_id = getIntFromKey(jobj, "dev_id");
+	ModDev *md = dm1.getModDev(dev_id);
+	if ((md->getModCom())->getModDescription() == "LED_CTRL") {
+		LedControl *lctrl = (LedControl *)md;
+		lctrl->turnOff();
+		return "OK";
+	}
+	return "FAIL";
+}
+
+string setOnAct(json_object * jobj) {
+	int dev_id = getIntFromKey(jobj, "dev_id");
+	ModDev *md = dm1.getModDev(dev_id);
+	if ((md->getModCom())->getModDescription() == "ACT_RELE") {
+		ActuatorRele *actr = (ActuatorRele *)md;
+		actr->enableRele();
+		return "OK";
+	}
+	return "FAIL";
+}
+
+string setOffAct(json_object * jobj) {
+	int dev_id = getIntFromKey(jobj, "dev_id");
+	ModDev *md = dm1.getModDev(dev_id);
+	if ((md->getModCom())->getModDescription() == "ACT_RELE") {
+		ActuatorRele *actr = (ActuatorRele *)md;
+		actr->disableRele();
+		return "OK";
+	}
+	return "FAIL";
+}
+
+string setLedBrightness(json_object * jobj) {
+	int dev_id = getIntFromKey(jobj, "dev_id");
+	ModDev *md = dm1.getModDev(dev_id);
+	if ((md->getModCom())->getModDescription() == "LED_CTRL") {
+		LedControl *lctrl = (LedControl *)md;
+		lctrl->setBrightness(getIntFromKey(jobj, "intensity"));
+		return "OK";
+	}
+	return "FAIL";
+}
+
+string getTemp(json_object * jobj) {
+	int dev_id = getIntFromKey(jobj, "dev_id");
+	ModDev *md = dm1.getModDev(dev_id);
+	if (md == NULL) return "FAIL";
+
+	json_object *jobjTmp = json_object_new_object();
+	
+	json_object *jstring = json_object_new_string("GET_TEMP");
+	json_object_object_add(jobjTmp, "INTR", jstring);
+
+	json_object *jintID = json_object_new_int(md->getID());
+	json_object_object_add(jobjTmp, "dev_id", jintID);
+
+	if ((md->getModCom())->getModDescription() == "TMP_SENS") {
+		TempSensor *tmpsens = (TempSensor *)md;
+
+		json_object *jintTemp = json_object_new_int(tmpsens->getTempValue());
+		json_object_object_add(jobjTmp, "temperature", jintTemp);
+
+		return string(json_object_to_json_string(jobjTmp));
+	}
+	return "FAIL";
+}
 
 string getReturn(json_object * jobj) {
 	string intr = getStrFromKey(jobj, "INTR");
 	if (intr == "RQST_ALL") {
 		return getAllList();
+	}else if (intr == "ONLED") {
+		return setOnLed(jobj);
+	}else if (intr == "OFFLED") {
+		return setOffLed(jobj);
+	}else if (intr == "SET_INTENSITY") {
+		return setLedBrightness(jobj);
+	}else if (intr == "ONACT") {
+		return setOnAct(jobj);
+	}else if (intr == "OFFACT") {
+		return setOffAct(jobj);
+	}else if (intr == "GET_TEMP") {
+		return getTemp(jobj);
 	}
+	return "FAIL";
 }
 
 int main(int argc, char const *argv[]) {
@@ -186,19 +277,19 @@ int main(int argc, char const *argv[]) {
 
 
 	int new_sd;
-	while(1){
-		struct sockaddr_storage their_addr;
-		socklen_t addr_size = sizeof(their_addr);
-		new_sd = accept(socketfd, (struct sockaddr *)&their_addr, &addr_size);
-		if (new_sd == -1)
-		{
-			std::cout << "listen error" << std::endl ;
-		}
-		else
-		{
-			std::cout << "Connection accepted. Using new socketfd : "  <<  new_sd << std::endl;
-		}
+	struct sockaddr_storage their_addr;
+	socklen_t addr_size = sizeof(their_addr);
+	new_sd = accept(socketfd, (struct sockaddr *)&their_addr, &addr_size);
+	if (new_sd == -1)
+	{
+		std::cout << "listen error" << std::endl ;
+	}
+	else
+	{
+		std::cout << "Connection accepted. Using new socketfd : "  <<  new_sd << std::endl;
+	}
 
+	while(1){
 		std::cout << "Waiting to recieve data..."  << std::endl;
 		ssize_t bytes_recieved;
 		char incomming_data_buffer[1000];
@@ -210,6 +301,8 @@ int main(int argc, char const *argv[]) {
 		incomming_data_buffer[bytes_recieved] = '\0';
 		//std::cout << incomming_data_buffer << std::endl;
 
+		if (incomming_data_buffer[0] != '{') break;
+			
 		// JSON-----
 		json_object * jobj = json_tokener_parse(incomming_data_buffer);     
 		//json_parse(jobj);

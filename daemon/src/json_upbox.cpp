@@ -96,23 +96,23 @@ int getIntFromKey(json_object * jobj, string skey) {
 			type = json_object_get_type(val);
 			switch (type) {
 				case json_type_int:
-					return json_object_get_int(val);
+					return (int)json_object_get_int(val);
 					break;
 			}
 		}
 	}
 }
 
-int getBooleanFromKey(json_object * jobj, string skey) {
+/*int getBooleanFromKey(json_object * jobj, string skey) {
 	enum json_type type;
-	json_object_object_foreach(jobj, key, val) { /*Passing through every array element*/
+	json_object_object_foreach(jobj, key, val) {
 		if (string(key) == skey) {
 			type = json_object_get_type(val);
 			switch (type) {
 				case json_type_boolean: 
-					return string(json_object_get_bolean(val));
+					return (bool)json_object_get_bolean(val);
 					break;
 			}
 		}
 	}
-}
+}*/
