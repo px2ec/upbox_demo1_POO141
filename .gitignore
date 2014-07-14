@@ -1,3 +1,9 @@
 *.o
 *.CSV
 *.DAT
+
+webapp/bootstrap-3.2.0-dist/*
+
+webapp/bootstrap-3.2.0/*
+
+webapp/interescolar/*
