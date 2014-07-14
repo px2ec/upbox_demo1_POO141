@@ -5,17 +5,18 @@
 //#define ACTUATORS		4
 
 // Tipo de instrucciones
-#define ENABLE_INTR		48
-#define DISABLE_INTR	56
+#define ENABLE_INTR			48
+#define DISABLE_INTR		56
 //--
-#define ENABLE_ALL		44
-#define DISABLE_ALL		52
+#define ENABLE_ALL			44
+#define DISABLE_ALL			52
 
-#define CHECK_DEV		16
-#define INIT_DEV		9
+#define CHECK_DEV			16
+#define INIT_DEV			9
 
-#define CHECK_STATE		42
-#define SET_BRIGHTNESS	12
+#define CHECK_STATE			42
+#define SET_BRIGHTNESS		12
+#define CHECK_BRIGHTNESS	60
 
 
 typedef struct minipkt {
@@ -29,6 +30,7 @@ typedef struct minipkt {
 const int led_pin = 9; // pins of suction-cups
 int enflag = 0; // enable flag from recieving packet
 bool led_state = 0;
+int brightness = 0;
 
 // working packet
 packet lepacket;
@@ -45,6 +47,13 @@ void sendState() {
 	Serial.write(CHECK_STATE);
 	Serial.write(1);
 	Serial.write((int)led_state);
+}
+
+void sendBrightness() {
+	Serial.write(0xFF);
+	Serial.write(CHECK_BRIGHTNESS);
+	Serial.write(1);
+	Serial.write(brightness);
 }
 
 void setup() {
@@ -83,26 +92,26 @@ void loop() {
 			if (tmppacket.param[0] == CHECK_DEV)
 				printDeviceDescription();
 			break; 
+		case CHECK_STATE:
+			if (tmppacket.param[0] == CHECK_STATE)
+				sendState();
+			break;
+		case CHECK_BRIGHTNESS:
+			if (tmppacket.param[0] == CHECK_BRIGHTNESS)
+				sendBrightness();
+			break;
 		case ENABLE_INTR: // activar de forma selectiva
 			led_state = 1;
 			digitalWrite(led_pin, 1);
-
 			break;
 		case DISABLE_INTR: // desactivar de forma selectiva
 			led_state = 0;
 			digitalWrite(led_pin, 0);
-
-			break;
-		case CHECK_STATE: // desactivar de forma selectiva
-			if (tmppacket.param[0] == CHECK_STATE)
-				led_state = 0;
-			digitalWrite(led_pin, 0);
-
+			brightness = 0;
 			break;
 		case SET_BRIGHTNESS: // desactivar de forma selectiva
-			
+			brightness = (int)(tmppacket.param[0]);
 			analogWrite(led_pin, (int)(tmppacket.param[0]));
-
 			break;
 //		case ENABLE_ALL: // activar todos
 //			for(int i = 0; i < ACTUATORS; i++){

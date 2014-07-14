@@ -83,6 +83,10 @@ void loop() {
 			if (tmppacket.param[0] == CHECK_DEV)
 				printDeviceDescription();
 			break; 
+		case CHECK_STATE:
+			if (tmppacket.param[0] == CHECK_STATE)
+				sendState();
+			break;
 		case ENABLE_INTR: // activar de forma selectiva
 			act_state = 1;
 			for(int i = 0; i < n_sucks; i++){
