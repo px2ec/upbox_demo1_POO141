@@ -33,3 +33,7 @@ Para compilar el demonio:
 Programa de modulos implementado en Arduino
 -------------
 Ingresar en la carpeta *_arduino*.
+
+Documentación
+-------------
+Ingresar en la carpeta *documentation*.
