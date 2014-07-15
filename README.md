@@ -20,6 +20,7 @@ Para compilar correctamente, se debe tener previamente instalado:
 Compilación y ejecución de demonio
 -------------
 Para compilar el demonio:
+
 1.  cd daemon/
 2.  make
 3.  ./upboxd
@@ -27,6 +28,7 @@ Para compilar el demonio:
 Ejecución de webapp
 -------------
 Para compilar el demonio:
+
 1.  cd webapp/
 2.  python webapp.py
 
