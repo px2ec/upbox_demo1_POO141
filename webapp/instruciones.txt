@@ -1,0 +1,40 @@
+#On Led
+#--->
+{"INTR":"ONLED", "dev_id":id}
+#<---
+"OK"
+ 
+#-------
+#Off Led
+#--->
+{"INTR":"OFFLED", "dev_id":id}
+#<---
+"OK"
+ 
+#-------
+#On rele
+#--->
+{"INTR":"ONACT", "dev_id":id}
+#<---
+"OK"
+ 
+#-------
+#Off rele
+#--->
+{"INTR":"OFFACT", "dev_id":id}
+#<---
+"OK"
+ 
+#-------
+#set brightness
+#--->
+{"INTR":"SET_INTENSITY", "dev_id":id, "intensity":value}
+#<---
+"OK"
+ 
+#-------
+#get temperature
+#--->
+{"INTR":"GET_TEMP", "dev_id":id}
+#<---
+{"INTR":"GET_TEMP", "dev_id":id, "temperature":value}
