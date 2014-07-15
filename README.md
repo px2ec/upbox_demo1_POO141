@@ -32,9 +32,13 @@ Para compilar el demonio:
 1.  cd webapp/
 2.  python webapp.py
 
+-------------
+
 Programa de modulos implementado en Arduino
 -------------
-Ingresar en la carpeta *_arduino*.
+**Ingresar en la carpeta** *_arduino*.
+
+-------------
 
 Documentación
 -------------
