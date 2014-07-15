@@ -22,6 +22,11 @@ Sensor de temperatura
 -------------
 En Arduino abrir la carpeta *temp_sensor*
 
+
+
+-------------
+
+
 **Estos programas fueron probados en:**
 
 1.  Arduino UNO
