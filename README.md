@@ -1,5 +1,6 @@
 upbox
 =============
+
 Implementación de domótica modular.
 
 Acerca de...
@@ -35,10 +36,12 @@ Para ejecutar la webapp:
 1.  cd webapp/
 2.  python webapp.py
 
+Luego, ir al navegador y dirigirse a **localhost:5000**
 -------------
 
 Programa de modulos implementado en Arduino
 -------------
+Debe tener los perifericos conectados al ordenador que contendrá al demonio.
 **Ingresar en la carpeta** *_arduino*.
 
 -------------
