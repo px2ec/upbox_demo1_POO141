@@ -23,11 +23,14 @@ Para compilar el demonio:
 
 1.  cd daemon/
 2.  make
-3.  ./upboxd
+
+Para ejecutar:
+
+1.  ./upboxd
 
 Ejecución de webapp
 -------------
-Para compilar el demonio:
+Para ejecutar la webapp:
 
 1.  cd webapp/
 2.  python webapp.py
