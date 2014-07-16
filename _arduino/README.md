@@ -27,7 +27,7 @@ Sensor de temperatura
 -------------
 En Arduino abrir la carpeta *temp_sensor*.
 
-Este programa hace uso de un **sensor dallas**, y el OneWire bus esta en el pin 9.
+Este programa hace uso de un **sensor dallas**, y el *OneWire bus* esta en el *pin 9*.
 
 -------------
 
