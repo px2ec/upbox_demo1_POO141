@@ -203,6 +203,6 @@ app.add_url_rule('/devices/<int:dev_id>',
 
 app.debug = True
 if __name__ == '__main__':
-	socket = sock.DasSocket(host = '10.150.15.138', port = 5556)
+	socket = sock.DasSocket(host = '127.0.0.1', port = 5556)
 	# socket = sock.DasSocket()
 	app.run(host='0.0.0.0')
